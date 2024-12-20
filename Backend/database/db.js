@@ -37,6 +37,85 @@ const User = sequelize.define(
     }
 );
 
-(async () => {
-    await sequelize.sync({force: true});
-})();
+const Meal = sequelize.define(
+    "meals",
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        name: {
+            type: DataTypes.STRING,
+        },
+        price: {
+            type: DataTypes.FLOAT,
+        },
+        description: {
+            type: DataTypes.TEXT,
+        },
+    },
+    {
+        timestamps: false,
+    }
+);
+
+const Appointment = sequelize.define(
+    "appointments",
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        date: {
+            type: DataTypes.DATEONLY,
+        },
+        time: {
+            type: DataTypes.TIME,
+        },
+        partySize: {
+            type: DataTypes.INTEGER,
+        },
+    },
+    {
+        timestamps: false,
+    }
+);
+
+const AppointmentMeal = sequelize.define(
+    "appointmentsmeals",
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        appointmentId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        mealId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        quantity: {
+            type: DataTypes.INTEGER,
+        },
+    },
+    {
+        timestamps: false,
+    }
+);
+
+User.hasMany(Appointment, { foreignKey: "userId" });
+Appointment.belongsTo(User, { foreignKey: "userId" });
+
+Appointment.belongsToMany(Meal, { through: AppointmentMeal, foreignKey: "appointmentId" });
+Meal.belongsToMany(Appointment, { through: AppointmentMeal, foreignKey: "mealId" });
+
+(async () => {})(); 
