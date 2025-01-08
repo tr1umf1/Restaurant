@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-// I have to create users, meals, appointments, appointmentsmeals
+const bcrypt = require('bcrypt');
 
 const sequelize = new Sequelize('restaurant', 'root', '', {
     host: 'localhost',
@@ -7,12 +7,11 @@ const sequelize = new Sequelize('restaurant', 'root', '', {
     port: 3307,
 });
 
-
 const User = sequelize.define(
-    "users",
+    'users',
     {
         id: {
-            type: DataTypes.INTEGER, 
+            type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
@@ -27,18 +26,24 @@ const User = sequelize.define(
         },
         email: {
             type: DataTypes.STRING,
+            unique: true,
         },
         password: {
             type: DataTypes.STRING,
         },
+        isLoggedIn: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
     },
     {
+        freezeTableName: true,
         timestamps: false,
     }
 );
 
 const Meal = sequelize.define(
-    "meals",
+    'meals',
     {
         id: {
             type: DataTypes.INTEGER,
@@ -61,7 +66,7 @@ const Meal = sequelize.define(
 );
 
 const Appointment = sequelize.define(
-    "appointments",
+    'appointments',
     {
         id: {
             type: DataTypes.INTEGER,
@@ -81,6 +86,14 @@ const Appointment = sequelize.define(
         partySize: {
             type: DataTypes.INTEGER,
         },
+        name: {  // Add name field
+            type: DataTypes.STRING,
+            allowNull: false,  // Make it required or optional based on your needs
+        },
+        specialRequest: {  // Add specialRequest field
+            type: DataTypes.STRING,
+            allowNull: true,  // You can set this as optional
+        },
     },
     {
         timestamps: false,
@@ -88,23 +101,28 @@ const Appointment = sequelize.define(
 );
 
 const AppointmentMeal = sequelize.define(
-    "appointmentsmeals",
+    'appointmentsmeals',
     {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        appointmentId: {
-            type: DataTypes.INTEGER,
+        meal: {
+            type: DataTypes.STRING,
             allowNull: false,
         },
-        mealId: {
+        rating: {
             type: DataTypes.INTEGER,
+            validate: {
+                min: 1,
+                max: 5,
+            },
             allowNull: false,
         },
-        quantity: {
-            type: DataTypes.INTEGER,
+        description: {
+            type: DataTypes.TEXT,
+            allowNull: false,
         },
     },
     {
@@ -112,10 +130,26 @@ const AppointmentMeal = sequelize.define(
     }
 );
 
-User.hasMany(Appointment, { foreignKey: "userId" });
-Appointment.belongsTo(User, { foreignKey: "userId" });
+User.beforeCreate(async (user) => {
+    user.password = await bcrypt.hash(user.password, 10);
+});
 
-Appointment.belongsToMany(Meal, { through: AppointmentMeal, foreignKey: "appointmentId" });
-Meal.belongsToMany(Appointment, { through: AppointmentMeal, foreignKey: "mealId" });
+// Define relationships
+User.hasMany(Appointment, { foreignKey: 'userId' });
+Appointment.belongsTo(User, { foreignKey: 'userId' });
 
-(async () => {})(); 
+// Appointment.belongsToMany(Meal, { through: AppointmentMeal, foreignKey: 'appointmentId' });
+// Meal.belongsToMany(Appointment, { through: AppointmentMeal, foreignKey: 'mealId' });
+
+sequelize.sync({ alter: true });
+
+(async () => {
+    try {
+        await sequelize.sync();
+        console.log('Database synced successfully.');
+    } catch (error) {
+        console.error('Error syncing database:', error.message);
+    }
+})();
+
+module.exports = { sequelize, User, Meal, Appointment, AppointmentMeal };

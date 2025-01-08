@@ -1,43 +1,68 @@
 import { useState } from 'react';
+import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 
 export default function MakeReservation() {
   const [formData, setFormData] = useState({
+    userId: 1, // Example user ID, replace with actual logged-in user ID
     name: '',
     email: '',
     date: '',
     time: '',
     guests: '',
-    specialRequests: ''
+    specialRequests: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you would send this to your backend
-    toast.success('Reservation request submitted successfully!');
-    setFormData({
-      name: '',
-      email: '',
-      date: '',
-      time: '',
-      guests: '',
-      specialRequests: ''
-    });
+
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/appointments/create',
+        formData
+      );
+
+      if (response.data.success) {
+        toast.success('Reservation request submitted successfully!');
+        setFormData({
+          userId: 1, // Keep this for the next reservation
+          name: '',
+          email: '',
+          date: '',
+          time: '',
+          guests: '',
+          specialRequests: '',
+        });
+        // Redirect after successful reservation
+      } else {
+        toast.error('Failed to create reservation');
+      }
+    } catch (error) {
+      console.error('Error creating reservation:', error);
+      toast.error('An error occurred while creating the reservation');
+    }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] py-12 bg-muted/50   overflow-x-auto">
+    <div className="min-h-[calc(100vh-4rem)] py-12 bg-muted/50 overflow-x-auto">
       <div className="max-w-3xl mx-auto px-4">
         <Card>
           <CardHeader>

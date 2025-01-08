@@ -2,9 +2,20 @@ import { Link } from 'react-router-dom';
 import { UtensilsCrossed } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const { isAuthenticated, logout } = useAuth();
+   const navigate = useNavigate();
+
+    const handleLogout = async () => {
+      try {
+        await logout(); // Perform the logout action from your AuthContext
+        navigate('/login'); // Redirect to the login page
+      } catch (error) {
+        console.error('Error logging out', error);
+      }
+    };
 
   return (
     <nav className="border-b w-[120%]" style={{ width: '100vw' }}>
@@ -18,7 +29,7 @@ export default function Navbar() {
           <div className="flex space-x-4">
             {isAuthenticated && (
               <>
-                <Button variant="ghost" onClick={logout}>
+                <Button variant="ghost" onClick={handleLogout}>
                   Logout
                 </Button>
               </>

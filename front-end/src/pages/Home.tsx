@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import MakeReservation from './MakeReservation';
+import PastMealReview from './AppoitnmentMeal';
 
 const restaurantPhotos = [
   {
@@ -104,6 +105,7 @@ export default function Home() {
       </div>
       <div className="bg-background py-12">
         <MakeReservation />
+        <PastMealReview />
       </div>
     </div>
   );

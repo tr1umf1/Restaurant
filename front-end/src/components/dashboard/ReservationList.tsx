@@ -36,6 +36,7 @@ export function ReservationList({ reservations, onStatusChange }: ReservationLis
             <TableCell>{reservation.date}</TableCell>
             <TableCell>{reservation.time}</TableCell>
             <TableCell>{reservation.guests}</TableCell>
+            <TableCell>{reservation.specialRequests}</TableCell>
             <TableCell>
               <Badge
                 variant={

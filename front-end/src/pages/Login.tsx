@@ -4,7 +4,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 
@@ -16,10 +21,18 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const allowedEmail = 'triumfavdyli6@gmail.com'; 
+    const allowedPassword = 'triumf123';
+
     try {
-      login(email, password);
-      toast.success('Logged in successfully');
-      navigate('/dashboard');
+      if (email === allowedEmail && password === allowedPassword) {
+        login(email, password);
+        toast.success('Logged in successfully');
+        navigate('/dashboard');
+      } else {
+        toast.error('Invalid email or password');
+      }
     } catch (error) {
       toast.error('Failed to login');
     }
@@ -56,7 +69,8 @@ export default function Login() {
               />
             </div>
             <div className="text-center text-sm">
-              <p>Don't have a manager account?{' '}
+              <p>
+                Don't have a manager account?{' '}
                 <Link to="/register" className="text-primary hover:underline">
                   Register here
                 </Link>
