@@ -3,7 +3,7 @@ const passport = require("passport");
 const { User } = require("../database/db");
 
 const options = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // extract jwt token
     secretOrKey: process.env.JWT_SECRET,
 };
 

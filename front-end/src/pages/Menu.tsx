@@ -10,6 +10,7 @@ export default function Menu() {
     name: '',
     price: '',
     description: '',
+    image: '', // Add image field
   });
   const [menuItems, setMenuItems] = useState(() => {
     const storedMenuItems = localStorage.getItem('menuItems');
@@ -43,15 +44,14 @@ export default function Menu() {
       const addedMeal = {
         ...newMeal,
         id: Date.now(),
-        image: '/path/to/placeholder.png',
       };
 
       setMenuItems((prevMenu) => ({
         ...prevMenu,
-        starters: [...prevMenu.starters, addedMeal],
+        starters: [...prevMenu.starters, addedMeal], // Adjust tab if necessary
       }));
 
-      setNewMeal({ name: '', price: '', description: '' });
+      setNewMeal({ name: '', price: '', description: '', image: '' });
       setIsFormVisible(false);
     } else {
       alert('Failed to add meal');
@@ -96,6 +96,14 @@ export default function Menu() {
                 name="description"
                 placeholder="Meal Description"
                 value={newMeal.description}
+                onChange={handleChange}
+                className="border p-3 mb-4 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              />
+              <input
+                type="text"
+                name="image"
+                placeholder="Image URL"
+                value={newMeal.image}
                 onChange={handleChange}
                 className="border p-3 mb-4 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
               />
