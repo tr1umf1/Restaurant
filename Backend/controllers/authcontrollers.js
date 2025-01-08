@@ -22,13 +22,10 @@ const loginUser = async (req, res) => {
             { expiresIn: "1h" }
         );
 
-        // Respond with the token and a redirect URL
         return res.status(200).json({
             message: "Login successful",
-            token: token,
-            redirectUrl: "/dashboard"  // Add the redirect URL to the response
+            token,
         });
-
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

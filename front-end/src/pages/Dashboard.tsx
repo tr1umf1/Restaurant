@@ -23,7 +23,6 @@ export default function Dashboard() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [reviews, setReviews] = useState([]);
 
-  // Fetch reservations from the backend
   const fetchReservations = async () => {
     try {
       const response = await axios.get(
@@ -36,7 +35,6 @@ export default function Dashboard() {
     }
   };
 
-  // Fetch reviews from the backend
   const fetchReviews = async () => {
     try {
       const response = await axios.get(
@@ -58,7 +56,8 @@ export default function Dashboard() {
     }
   }, [isAuthenticated, navigate]);
 
-  // Handle status change for reservations
+  console.log(isAuthenticated);
+
   const handleStatusChange = (
     id: string,
     status: 'confirmed' | 'cancelled'

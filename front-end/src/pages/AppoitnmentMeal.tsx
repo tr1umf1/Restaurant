@@ -9,13 +9,13 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import axios from 'axios'; // Import axios to make HTTP requests
+import axios from 'axios'; 
 
 export default function PastMealReview() {
   const [reviews, setReviews] = useState({
     rating: '',
     review: '',
-    meal: '', // Added meal field to state
+    meal: '', 
   });
 
   const handleChange = (e) => {
@@ -30,7 +30,6 @@ export default function PastMealReview() {
     e.preventDefault();
 
     try {
-      // Send data to the backend
       const response = await axios.post(
         'http://localhost:5000/api/appointmentsmeals/add',
         {
@@ -65,10 +64,10 @@ export default function PastMealReview() {
                 <Label htmlFor="meal">Meal</Label>
                 <Input
                   id="meal"
-                  name="meal" // Added name attribute to connect with state
-                  value={reviews.meal} // Bind to meal state
-                  onChange={handleChange} // Handle input changes
-                  placeholder="Enter the meal you had" // Placeholder for input
+                  name="meal" 
+                  value={reviews.meal} 
+                  onChange={handleChange} 
+                  placeholder="Enter the meal you had" 
                   className="bg-gray-100"
                 />
               </div>

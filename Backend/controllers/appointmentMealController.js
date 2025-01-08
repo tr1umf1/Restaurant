@@ -1,7 +1,6 @@
 const { AppointmentMeal } = require('../database/db.js');
 
 module.exports = {
-    // Add a new appointment meal review
     addAppointmentMeal: async (req, res) => {
         const { meal, rating, description } = req.body;
 
@@ -25,7 +24,6 @@ module.exports = {
         }
     },
 
-    // Get all appointment meal reviews
     getAllAppointmentMeals: async (req, res) => {
         try {
             const reviews = await AppointmentMeal.findAll();

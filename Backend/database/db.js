@@ -134,6 +134,23 @@ User.beforeCreate(async (user) => {
     user.password = await bcrypt.hash(user.password, 10);
 });
 
+const createTestUser = async () => {
+    try {
+        const user = await User.create({
+            name: 'Erion',
+            surname: 'Rexhepi',
+            username: 'ErionRexhepi',
+            email: 'Erionrexhepi@gmail.com',  // Change this if needed
+            password: 'erion123',  // This will be hashed automatically
+            isLoggedIn: false,  // Default value
+        });
+
+        console.log('Test User created successfully:', user);
+    } catch (error) {
+        console.error('Error creating test user:', error);
+    }
+};
+
 // Define relationships
 User.hasMany(Appointment, { foreignKey: 'userId' });
 Appointment.belongsTo(User, { foreignKey: 'userId' });
@@ -147,6 +164,7 @@ sequelize.sync({ alter: true });
     try {
         await sequelize.sync();
         console.log('Database synced successfully.');
+        createTestUser(); 
     } catch (error) {
         console.error('Error syncing database:', error.message);
     }

@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 
 export default function MakeReservation() {
   const [formData, setFormData] = useState({
-    userId: 1, // Example user ID, replace with actual logged-in user ID
+    userId: 1, 
     name: '',
     email: '',
     date: '',
@@ -34,7 +34,7 @@ export default function MakeReservation() {
       if (response.data.success) {
         toast.success('Reservation request submitted successfully!');
         setFormData({
-          userId: 1, // Keep this for the next reservation
+          userId: 1, 
           name: '',
           email: '',
           date: '',
@@ -42,7 +42,6 @@ export default function MakeReservation() {
           guests: '',
           specialRequests: '',
         });
-        // Redirect after successful reservation
       } else {
         toast.error('Failed to create reservation');
       }

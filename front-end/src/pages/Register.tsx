@@ -21,7 +21,6 @@ export default function Register() {
       toast.error('Passwords do not match');
       return;
     }
-    // In a real app, you would send this data to your backend
     toast.success('Registration successful');
     navigate('/login');
   };

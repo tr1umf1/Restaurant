@@ -12,13 +12,11 @@ export default function Menu() {
     description: '',
   });
   const [menuItems, setMenuItems] = useState(() => {
-    // Check localStorage for existing menuItems
     const storedMenuItems = localStorage.getItem('menuItems');
     return storedMenuItems ? JSON.parse(storedMenuItems) : initialMenuItems;
   });
   const [isFormVisible, setIsFormVisible] = useState(false);
 
-  // Store the updated menuItems to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('menuItems', JSON.stringify(menuItems));
   }, [menuItems]);
@@ -48,13 +46,11 @@ export default function Menu() {
         image: '/path/to/placeholder.png',
       };
 
-      // Dynamically update the menu and store it in localStorage
       setMenuItems((prevMenu) => ({
         ...prevMenu,
         starters: [...prevMenu.starters, addedMeal],
       }));
 
-      // Reset the form
       setNewMeal({ name: '', price: '', description: '' });
       setIsFormVisible(false);
     } else {

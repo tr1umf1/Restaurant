@@ -45,7 +45,6 @@ const restaurantPhotos = [
 export default function Home() {
   return (
     <div>
-      {/* Hero Section */}
       <div className="relative  h-screen overflow-x-auto ">
         <div className="absolute inset-0">
           <img

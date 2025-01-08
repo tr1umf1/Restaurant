@@ -7,20 +7,19 @@ const mealRoutes = require('./routes/mealRoutes');
 const appointmentMealRoutes = require('./routes/appointmentMealRoutes');
 const cors = require('cors');
 
-const app = express(); // Initialize express app
+const app = express(); 
 
 app.use(cors({
-  origin: 'http://localhost:5173' // Replace with your frontend's origin
+  origin: 'http://localhost:5173' 
 }));
 
-app.options('*', cors()); // Enable preflight requests for all routes
+app.options('*', cors()); 
 
-// Use express.json() instead of bodyParser
+
 app.use(express.json());
 
-app.use(passport.initialize()); // Initialize passport
+app.use(passport.initialize()); 
 
-// Use authentication routes
 app.use("/api/auth", authRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use('/api/meals', mealRoutes);

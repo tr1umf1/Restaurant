@@ -1,21 +1,17 @@
-const { Appointment, AppointmentMeal } = require('../database/db.js'); // Import the models
+const { Appointment, AppointmentMeal } = require('../database/db.js');
 
-// Controller function to create a reservation
 const createReservation = async (req, res) => {
-    const { userId, name, email, date, time, guests, specialRequests } = req.body; // Ensure 'name' is here
+    const { userId, name, email, date, time, guests, specialRequests } = req.body; 
 
     try {
-        // Step 1: Create the appointment (reservation)
         const appointment = await Appointment.create({
             userId,
-            name, // Make sure the 'name' is part of the appointment model in the DB
-            email, // Add email if needed
+            name, 
+            email, 
             date,
             time,
-            partySize: guests, // Assuming you want to map guests to partySize
+            partySize: guests,
         });
-
-        // Step 2: Handle special requests, meals, etc. (Optional)
 
         return res.status(200).json({
             success: true,
@@ -34,7 +30,7 @@ const createReservation = async (req, res) => {
 
 const getAppointments = async (req, res) => {
     try {
-        const appointments = await Appointment.findAll(); // Fetch all appointments
+        const appointments = await Appointment.findAll(); 
         return res.status(200).json(appointments);
     } catch (error) {
         console.error('Error fetching appointments:', error);

@@ -1,5 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
-
+import {createContext,useContext,useState,ReactNode,useEffect,} from 'react';
 interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => void;
@@ -13,13 +12,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<{ email: string } | null>(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsAuthenticated(true);
+      const decodedToken = JSON.parse(atob(token.split('.')[1])); 
+      setUser({ email: decodedToken.email });
+    }
+  }, []);
+
   const login = (email: string, password: string) => {
-    // In a real app, you would validate credentials with your backend
+
+    const fakeToken = JSON.stringify({ email }); 
+    localStorage.setItem('token', fakeToken); 
     setIsAuthenticated(true);
     setUser({ email });
   };
 
   const logout = () => {
+    localStorage.removeItem('token'); 
     setIsAuthenticated(false);
     setUser(null);
   };

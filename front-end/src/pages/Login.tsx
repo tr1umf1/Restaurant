@@ -16,25 +16,31 @@ import { toast } from 'sonner';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const allowedEmail = 'triumfavdyli6@gmail.com'; 
-    const allowedPassword = 'triumf123';
-
     try {
-      if (email === allowedEmail && password === allowedPassword) {
-        login(email, password);
-        toast.success('Logged in successfully');
-        navigate('/dashboard');
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+        toast.success('Logged in successfully!');
+        navigate('/dashboard'); 
       } else {
-        toast.error('Invalid email or password');
+        const errorData = await response.json();
+        toast.error(errorData.error || 'Login failed!');
       }
     } catch (error) {
-      toast.error('Failed to login');
+      toast.error('Something went wrong!');
     }
   };
 

@@ -3,7 +3,6 @@ const { createReservation, getAppointments } = require('../controllers/appointme
 
 const router = express.Router();
 
-// POST request to create a reservation (appointment)
 router.post('/create', createReservation);
 
 router.get('/', getAppointments);
